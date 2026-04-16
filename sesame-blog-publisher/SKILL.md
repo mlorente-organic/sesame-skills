@@ -146,23 +146,38 @@ Genera el contenido HTML siguiendo la estructura en `@blog-structure.md`.
 
 ## Fase 4 — IMÁGENES
 
-**4a. Buscar en media library interna** (siempre primero):
+**4a. Buscar en media library interna — SIEMPRE automático, sin esperar indicación del content**
+
+Ejecutar búsqueda con múltiples términos derivados de la KW principal, categoría y tema del artículo:
 ```powershell
-$terms = @("{kw_slug}", "{categoria_slug}", "{termino_relacionado}")
-foreach ($term in $terms) {
-    Invoke-RestMethod "https://staging.sesamehr.es/wp-json/wp/v2/media?search=$term&media_type=image&per_page=5" -Headers $h |
-    ForEach-Object { Write-Host $_.id, $_.slug, $_.source_url }
+# Guardar como .ps1 y ejecutar con: powershell.exe -ExecutionPolicy Bypass -File search-media.ps1
+$envVars = @{}
+Get-Content "C:\Users\m.lorente\Downloads\Nueva carpeta\.env" | Where-Object { $_ -notmatch "^#" -and $_ -match "=" } | ForEach-Object {
+    $p = $_ -split "=",2
+    $envVars[$p[0].Trim()] = $p[1].Trim()
+}
+$b64 = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($envVars["WP_USER"] + ":" + $envVars["WP_APP_PASSWORD"]))
+$h = @{ Authorization = "Basic " + $b64 }
+
+foreach ($term in @("{kw_slug}", "{categoria_slug}", "{termino_1}", "{termino_2}", "{termino_3}")) {
+    $r = Invoke-RestMethod ("https://staging.sesamehr.es/wp-json/wp/v2/media?search=" + $term + "&media_type=image&per_page=5") -Headers $h
+    if ($r.Count -gt 0) {
+        Write-Host ("=== " + $term + " ===")
+        $r | ForEach-Object { Write-Host ($_.id.ToString() + " | " + $_.slug + " | " + $_.source_url) }
+    }
 }
 ```
-→ Mostrar opciones al content para que confirme cuáles usar.
-→ Criterio selección: relevancia semántica con el contenido > fecha reciente > formato .webp
+→ Seleccionar automáticamente sin preguntar al content:
+- **Featured image:** la más relevante semánticamente con la KW principal. Preferir .webp y fecha reciente.
+- **Imagen de cuerpo:** segunda opción relevante, embebida en el H2 más visual del artículo (solo si extensión > 1.000 palabras).
+→ Criterio: relevancia semántica > formato .webp > fecha reciente.
 
 **4b. Si no hay imágenes relevantes:**
 - Avisar: *"No encontré imágenes internas relevantes. Pendiente conexión con Canva Team (próximamente). Por ahora, ¿puedes proporcionar una imagen o indicar una búsqueda específica?"*
 
 **Asignación:**
-- `featured_media`: imagen principal (ID de WP)
-- Imagen de cuerpo: embebida en HTML como `<figure class="wp-block-image size-large"><img src="{url}" alt="{kw_secundaria}" /></figure>` — solo si extensión > 1000 palabras
+- `featured_media`: ID de WP de la imagen principal
+- Imagen de cuerpo: `<figure class="wp-block-image size-large"><img src="{url}" alt="{kw_secundaria}" /></figure>`
 
 ---
 
@@ -180,29 +195,37 @@ Si hay cambios → actualizar HTML y regenerar .docx. Repetir hasta aprobación.
 ### 5b. Publicar en borrador en staging (tras aprobación)
 
 ```powershell
-# Leer .env
-$env = Get-Content "C:\Users\m.lorente\Downloads\Nueva carpeta\.env" |
-  Where-Object { $_ -notmatch "^#" -and $_ -match "=" } |
-  ForEach-Object { $p = $_ -split "=",2; @{$p[0].Trim()=$p[1].Trim()} }
+# ⚠️ CRÍTICO: NO usar ConvertTo-Json para el contenido HTML.
+# ConvertTo-Json escapa mal tildes, ñ y comillas tipográficas → el content llega vacío a WP.
+# SIEMPRE serializar el JSON manualmente como se muestra aquí.
+# Guardar como .ps1 y ejecutar con: powershell.exe -ExecutionPolicy Bypass -File publish-post.ps1
 
+$envVars = @{}
+Get-Content "C:\Users\m.lorente\Downloads\Nueva carpeta\.env" | Where-Object { $_ -notmatch "^#" -and $_ -match "=" } | ForEach-Object {
+    $p = $_ -split "=",2
+    $envVars[$p[0].Trim()] = $p[1].Trim()
+}
+$AUTH = "Basic " + [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($envVars["WP_USER"] + ":" + $envVars["WP_APP_PASSWORD"]))
+$H = @{ Authorization = $AUTH; "Content-Type" = "application/json; charset=utf-8" }
 $WP_URL = "https://staging.sesamehr.es"
-$AUTH   = "Basic " + [Convert]::ToBase64String(
-  [System.Text.Encoding]::UTF8.GetBytes("$($env.WP_USER):$($env.WP_APP_PASSWORD)"))
-$H = @{ Authorization = $AUTH; "Content-Type" = "application/json" }
 
-$payload = @{
-  title          = "{titulo}"
-  content        = "{html_contenido}"
-  status         = "draft"
-  slug           = "{slug-desde-titulo}"
-  excerpt        = "{meta_description}"
-  categories     = @({categoria_id})
-  author         = {autor_id}
-  featured_media = {media_id}
-} | ConvertTo-Json -Depth 3
+# Leer HTML y eliminar comentarios del brief
+$html = Get-Content "{ruta_draft.html}" -Raw -Encoding UTF8
+$html = $html -replace '(?s)<!--.*?-->\s*', ''
+
+# Escapar manualmente para JSON
+$htmlEscaped = $html -replace '\\', '\\\\'
+$htmlEscaped = $htmlEscaped -replace '"', '\"'
+$htmlEscaped = $htmlEscaped -replace "`r`n", '\n'
+$htmlEscaped = $htmlEscaped -replace "`n", '\n'
+$htmlEscaped = $htmlEscaped -replace "`r", '\n'
+$htmlEscaped = $htmlEscaped -replace "`t", '\t'
+
+# Construir JSON manualmente
+$jsonBody = '{"title":"{titulo}","content":"' + $htmlEscaped + '","status":"draft","slug":"{slug}","excerpt":"{meta_description}","categories":[{categoria_id}],"author":{autor_id},"featured_media":{media_id}}'
 
 $post = Invoke-RestMethod "$WP_URL/wp-json/wp/v2/posts" -Method Post -Headers $H `
-  -Body ([System.Text.Encoding]::UTF8.GetBytes($payload)) -TimeoutSec 30
+  -Body ([System.Text.Encoding]::UTF8.GetBytes($jsonBody)) -TimeoutSec 30
 ```
 
 ### 5c. Output final
