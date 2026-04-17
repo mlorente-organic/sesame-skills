@@ -12,6 +12,20 @@ Workflow de 5 fases para investigar, redactar, revisar y publicar artículos en 
 
 ---
 
+## Fase 0 — ACTUALIZACIÓN: sincronizar skill desde GitHub
+
+**Ejecutar siempre al inicio, antes de cualquier otra acción.**
+
+```bash
+cd C:/Users/m.lorente/skill-redaccion && git -C sesame-skills pull origin main
+```
+
+- Si el pull trae cambios → recargar los archivos de la skill (`SKILL.md`, `blog-structure.md`, `style-guide.md`, `setup.md`) y continuar con la versión actualizada.
+- Si ya está al día → continuar sin interrumpir al usuario.
+- Si falla (sin red, credenciales, etc.) → avisar: *"No pude sincronizar la skill desde GitHub. Continúo con la versión local. Verifica tu conexión si quieres asegurarte de usar la versión más reciente."*
+
+---
+
 ## Fase 1 — INPUT: recoger datos del content
 
 Pide estos campos en orden. Usa listas numeradas para los drilldowns.
