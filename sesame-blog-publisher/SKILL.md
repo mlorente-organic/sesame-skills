@@ -183,7 +183,7 @@ Genera el contenido HTML siguiendo la estructura en `@blog-structure.md`.
 - Densidad KW: 1%–1,5%. Sinónimos y variaciones en el resto.
 - Mínimo 2 datos externos con fuente y año (McKinsey, Deloitte, Gartner, organismo oficial)
 - Al menos 1 cita interna de Tiago Santos o Cristina Martín en blockquote Gutenberg. Presentar con nombre completo y cargo en primera mención.
-- 2 CTAs HubSpot: `[bannerhs id="X"]` (si no hay ID → marcador `[CTA-HUBSPOT-PENDIENTE-BANNER-1]`)
+- 2 CTAs HubSpot: `[bannerhs id="X"]` — elegir el banner más relevante para el tema del artículo usando la tabla de referencia de abajo. Si el content indica un nombre o shortcode concreto, usar ese. Si no hay banner adecuado → marcador `[CTA-HUBSPOT-PENDIENTE-BANNER-1]`
 - Mínimo 5 interlinks integrados en texto (no en listas "ver también")
 - Último párrafo del cuerpo (antes del H2 de Sesame): enlace a home con anchor `software de RR.HH.`
 - 3 artículos relacionados al final (solo posts publicados)
@@ -322,6 +322,79 @@ Solo tras confirmación explícita → cambiar status a `publish`:
 Invoke-RestMethod "$WP_URL/wp-json/wp/v2/posts/{id}" -Method Post -Headers $H `
   -Body '{"status":"publish"}' -TimeoutSec 30
 ```
+
+---
+
+## Referencia de Banners HubSpot
+
+**Fuente:** [Google Sheet — Banners HubSpot](https://docs.google.com/spreadsheets/d/1izh9SJvq4nAhmhi_bpQEbSpXnNZ9njZuPfRpRtXUtPE/edit?gid=666229862)
+
+El content puede indicar el banner por **nombre** o por **shortcode**. Usar siempre el shortcode `[bannerhs id="X"]` en el HTML.
+
+Para elegir el más adecuado: priorizar el banner cuyo tema encaje con la KW principal del artículo. Si hay duda, preguntar al content.
+
+### GUÍAS y PLANTILLAS (lead generation)
+
+| Shortcode | Nombre | Tema principal |
+|---|---|---|
+| `[bannerhs id="25"]` | Guía de Reclutamiento | Reclutamiento |
+| `[bannerhs id="57"]` | Guía prompts para reclutamiento y selección | Reclutamiento / IA |
+| `[bannerhs id="51"]` | Plantillas para emails de reclutamiento | Reclutamiento |
+| `[bannerhs id="30"]` | Guía práctica para digitalizar el onboarding | Onboarding |
+| `[bannerhs id="32"]` | Plantilla para Evaluación 360º | Evaluación de desempeño |
+| `[bannerhs id="28"]` | Guía 10 evaluaciones imprescindibles para RRHH | Evaluación de desempeño |
+| `[bannerhs id="29"]` | Guía informes de Recursos Humanos | Informes y estadísticas |
+| `[bannerhs id="50"]` | Guía de Clima Laboral | Employee experience / Encuestas |
+| `[bannerhs id="47"]` | Guía de Comunicación Interna | Comunicación interna |
+| `[bannerhs id="55"]` | 50 acciones para mejorar tu comunicación interna | Comunicación interna |
+| `[bannerhs id="56"]` | Dossier Comunicación Interna | Comunicación interna |
+| `[bannerhs id="24"]` | Checklist Productividad Laboral | Productividad |
+| `[bannerhs id="23"]` | Checklist para Recursos Humanos | RRHH general |
+| `[bannerhs id="21"]` | Guía para elegir un software de HR | Software RRHH |
+| `[bannerhs id="19"]` | ¿Por qué invertir en un software de HR? | Software RRHH |
+| `[bannerhs id="18"]` | 10 señales de que necesitás un software de HR | Software RRHH |
+| `[bannerhs id="20"]` | ¿Cómo crear un departamento de HR desde 0? | Software RRHH |
+| `[bannerhs id="60"]` | Dossier Sesame AI | IA en RRHH |
+| `[bannerhs id="31"]` | Plantilla de Base de Datos de Empleados | Base de datos empleados |
+| `[bannerhs id="26"]` | Plantilla ficha del empleado para RRHH | Base de datos empleados |
+| `[bannerhs id="58"]` | Plantilla de nómina | Nóminas |
+| `[bannerhs id="48"]` | Guía de fichaje por whatsapp | Control horario / Fichaje |
+| `[bannerhs id="63"]` | Guía legal fichaje | Control horario / Fichaje |
+| `[bannerhs id="62"]` | Quizz descubre tu fichaje | Control horario / Fichaje |
+| `[bannerhs id="65"]` | LP de Fichaje | Control horario / Fichaje |
+| `[bannerhs id="64"]` | Dossier Comercial fichaje | Control horario / Fichaje |
+| `[bannerhs id="67"]` | Guía Turnos | Gestión de turnos |
+| `[bannerhs id="68"]` | Guía sanidad | Gestión de turnos (sanidad) |
+| `[bannerhs id="69"]` | Guía industria | Gestión de turnos (industria) |
+| `[bannerhs id="70"]` | Demo grabada turnos | Gestión de turnos |
+| `[bannerhs id="71"]` | Landing campaña Turnos | Gestión de turnos |
+| `[bannerhs id="27"]` | Calendario 2025 | RRHH general |
+| `[bannerhs id="73"]` | Calendario RH 2026 | RRHH general |
+| `[bannerhs id="59"]` | Plantilla de control de vacaciones | Vacaciones y ausencias |
+| `[bannerhs id="54"]` | Dossier LMS | Formación |
+| `[bannerhs id="79"]` | Guia LMS Estratégico | Formación |
+| `[bannerhs id="82"]` | Guia Kit LMS | Formación |
+| `[bannerhs id="83"]` | LP de LMS | Formación |
+| `[bannerhs id="84"]` | LP Demo Grabada LMS | Formación |
+| `[bannerhs id="76"]` | Checklist Salud Mental | Employee experience |
+| `[bannerhs id="77"]` | Guía Salud Mental | Employee experience |
+
+### DEMOS y CONVERSIÓN (MQL)
+
+| Shortcode | Nombre | Tipo |
+|---|---|---|
+| `[bannerhs id="46"]` | Demo general: Conoce Sesame en 20 minutos | Demo |
+| `[bannerhs id="49"]` | Demo Whatsapp | Demo |
+| `[bannerhs id="17"]` | Dossier comercial Genérico | Dossier |
+| `[bannerhs id="53"]` | Calculadora ROTACIÓN | Calculadora |
+| `[bannerhs id="61"]` | Calculadora ROI | Calculadora |
+| `[bannerhs id="34"]` | Gestión documental | LP conversión |
+
+### Banners PRÓXIMAMENTE (sin ID aún)
+- Guía de Inteligencia Artificial en RRHH
+- Guía de Inteligencia Artificial para procesos de reclutamiento
+
+→ Si el artículo trata sobre IA en RRHH y el content quiere usar estos banners: dejar marcador `[CTA-HUBSPOT-PENDIENTE-IA-RRHH]`
 
 ---
 
