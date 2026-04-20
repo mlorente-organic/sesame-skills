@@ -200,7 +200,11 @@ Genera el contenido HTML siguiendo la estructura en `@blog-structure.md`.
 
 ## Fase 4 — IMÁGENES
 
-**4a. Buscar en media library interna — SIEMPRE automático, sin esperar indicación del content**
+### Regla fundamental
+❌ **La imagen NO se inserta dentro del cuerpo del artículo.** El cuerpo solo contiene texto, headings, listas, blockquotes y banners HubSpot (`[bannerhs id="X"]`).
+✅ **La imagen va únicamente en el campo "Imagen destacada" (Featured Image)** del panel lateral de WordPress, asignada vía `featured_media` en la llamada a la API.
+
+### 4a. Buscar en media library interna — SIEMPRE automático, sin esperar indicación del content
 
 Ejecutar búsqueda con múltiples términos derivados de la KW principal, categoría y tema del artículo:
 ```powershell
@@ -223,15 +227,27 @@ foreach ($term in @("{kw_slug}", "{categoria_slug}", "{termino_1}", "{termino_2}
 ```
 → Seleccionar automáticamente sin preguntar al content:
 - **Featured image:** la más relevante semánticamente con la KW principal. Preferir .webp y fecha reciente.
-- **Imagen de cuerpo:** segunda opción relevante, embebida en el H2 más visual del artículo (solo si extensión > 1.000 palabras).
 → Criterio: relevancia semántica > formato .webp > fecha reciente.
 
-**4b. Si no hay imágenes relevantes:**
+### 4b. Metadatos obligatorios de la imagen seleccionada
+
+Al asignar la imagen, actualizar vía API sus metadatos:
+```powershell
+$mediaPatch = '{"alt_text":"{kw_principal} — Sesame HR","title":{"rendered":"{titulo_imagen}"},"description":{"rendered":"{descripcion_imagen}"}}'
+Invoke-RestMethod "https://staging.sesamehr.es/wp-json/wp/v2/media/{media_id}" -Method Post -Headers $H -Body ([System.Text.Encoding]::UTF8.GetBytes($mediaPatch))
+```
+
+Criterios de redacción de metadatos (ver `@style-guide.md` sección imágenes):
+- **Alt text:** KW principal + contexto descriptivo de la imagen. Máximo 125 caracteres. No repetir el título del post.
+- **Título:** nombre descriptivo del archivo en español, sin guiones, con la KW principal o secundaria.
+- **Descripción:** 1 frase que describa lo que muestra la imagen y su relación con el tema del artículo.
+
+### 4c. Si no hay imágenes relevantes
 - Avisar: *"No encontré imágenes internas relevantes. Pendiente conexión con Canva Team (próximamente). Por ahora, ¿puedes proporcionar una imagen o indicar una búsqueda específica?"*
 
-**Asignación:**
-- `featured_media`: ID de WP de la imagen principal
-- Imagen de cuerpo: `<figure class="wp-block-image size-large"><img src="{url}" alt="{kw_secundaria}" /></figure>`
+### Asignación en la llamada a la API
+- `featured_media`: ID de WP de la imagen seleccionada
+- ❌ No incluir ningún `<figure>` ni `<img>` en el HTML del contenido del post
 
 ---
 
