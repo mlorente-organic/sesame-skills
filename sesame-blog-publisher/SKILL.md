@@ -133,19 +133,59 @@ Optimización LLM:  [recomendaciones: FAQ, definiciones, datos con fuente]
 
 Genera el contenido HTML siguiendo la estructura en `@blog-structure.md`.
 
-**Consultar `@style-guide.md` para todas las reglas de redacción.** Resumen de las más críticas:
+**⚠️ OBLIGATORIO: Leer `@style-guide.md` completo antes de generar cada artículo. No es una sugerencia. Es la referencia que rige toda la redacción sin excepción.**
 
-- H1: KW principal en las primeras palabras, 50–70 caracteres, promesa concreta
-- Intro: 3 movimientos (problema → stakes → promesa editorial). Sin listas. Sin KW forzada en párrafo 1.
-- **Tercera persona siempre.** Sin "tú", sin "nosotros", sin preguntas retóricas.
+### Reglas críticas de redacción (extraídas del Manual de Estilo v2.0)
+
+**INTRODUCCIÓN — 3 movimientos estrictos:**
+- Párrafo 1: abre con la KW principal de forma natural. Contextualiza el problema o tensión real del lector. ❌ No mencionar "Sesame HR" aquí. ❌ No definir conceptos. ❌ No datos genéricos.
+- Párrafo 2: introduce de forma contextual (no publicitaria) la funcionalidad de Sesame HR relacionada con el tema, O un término técnico que amplíe el problema. Incluir aquí el primer enlace interno → página de funcionalidad del producto.
+- Párrafo 3: promesa editorial. Formato: *"En este artículo se explica [tema 1], [tema 2] y [tema 3]."* Máximo 2 frases.
+
+**HEADINGS:**
 - Todo H2/H3 debe abrirse con párrafo de introducción (nunca heading seguido de lista directamente)
-- KW principal en: H1, párrafo 1, al menos un H2, meta description, alt text imagen destacada
-- Densidad KW: 1%–1,5%. Usar sinónimos y variaciones en el resto.
-- Mínimo 5 links internos integrados en texto (no en listas de "ver también")
-- Al menos 1 dato externo con fuente (McKinsey, Deloitte, Gartner, organismo oficial)
-- Al menos 1 cita interna de Tiago Santos o Cristina Martín en blockquote de Gutenberg
-- 2 CTAs HubSpot: `[hubspot type="cta" portal="PORTAL_ID" id="CTA_ID"]` (si no hay ID → marcador)
-- Cierre: transición, no resumen. Máximo 2 párrafos.
+- H2: mínimo 3 líneas de introducción antes de cualquier lista o contenido
+- H3: mínimo 2–3 frases de introducción
+
+**USO DE PAAs (preguntas de "People Also Ask"):**
+- Evaluar si cada PAA tiene sentido como H2 dentro del flujo del artículo
+- Si encaja orgánicamente → incorporarla como H2 o H3 con su párrafo de introducción
+- ❌ NO agrupar PAAs en un apartado de "Preguntas frecuentes" / FAQ
+- Descartar las PAAs que no encajen en la estructura natural del artículo
+
+**ESTRUCTURA DEL ARTÍCULO — orden fijo:**
+1. H1
+2. Introducción (3 movimientos)
+3. [Banner CTA 1 — después de la intro]
+4. H2s del cuerpo (tantos como el tema requiera, con sus H3 si aplica)
+5. [Banner CTA 2 — cerca del final del cuerpo, antes del último H2]
+6. **Último H2: siempre el apartado de Sesame HR** (estructura de 3 movimientos: funcionalidad → integración con módulos → CTA prueba gratuita)
+7. 3 artículos relacionados (solo posts publicados, después del cierre)
+
+**❌ PROHIBIDO:**
+- Resumen o conclusión al final del artículo
+- H2 de "Conclusión", "En resumen", "Para concluir" o similar
+- Mencionar "Sesame HR" en el párrafo 1 de la introducción
+- Preguntas retóricas en cualquier parte del texto
+- "nosotros", "ofrecemos", "hacemos", "creemos"
+- Headings seguidos directamente de lista sin párrafo introductorio
+
+**CIERRE (dentro del último H2 — apartado Sesame HR):**
+- Estructura fija de 3 movimientos:
+  1. Funcionalidad: qué resuelve Sesame HR en relación al tema
+  2. Integración: bullets con módulos conectados (nombre del módulo + beneficio concreto)
+  3. CTA comercial: párrafo corto con invitación a prueba gratuita. Mencionar funcionalidad del artículo. Dejar claro que es sin coste y sin contrato. Incluir enlace a página principal + enlace a prueba gratuita.
+- ❌ No repetir información ya presentada en el cuerpo
+
+**OTROS OBLIGATORIOS:**
+- Persona gramatical ES: tercera persona (ver `@style-guide.md` sección 2)
+- KW principal en: H1, párrafo 1, al menos un H2, meta description, alt text imagen
+- Densidad KW: 1%–1,5%. Sinónimos y variaciones en el resto.
+- Mínimo 2 datos externos con fuente y año (McKinsey, Deloitte, Gartner, organismo oficial)
+- Al menos 1 cita interna de Tiago Santos o Cristina Martín en blockquote Gutenberg. Presentar con nombre completo y cargo en primera mención.
+- 2 CTAs HubSpot: `[bannerhs id="X"]` (si no hay ID → marcador `[CTA-HUBSPOT-PENDIENTE-BANNER-1]`)
+- Mínimo 5 interlinks integrados en texto (no en listas "ver también")
+- Último párrafo del cuerpo (antes del H2 de Sesame): enlace a home con anchor `software de RR.HH.`
 - 3 artículos relacionados al final (solo posts publicados)
 - Nombre de marca: siempre **Sesame HR** (nunca solo "Sesame")
 
