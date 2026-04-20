@@ -147,11 +147,11 @@ Genera el contenido HTML siguiendo la estructura en `@blog-structure.md`.
 - H2: mínimo 3 líneas de introducción antes de cualquier lista o contenido
 - H3: mínimo 2–3 frases de introducción
 
-**USO DE PAAs (preguntas de "People Also Ask"):**
-- Evaluar si cada PAA tiene sentido como H2 dentro del flujo del artículo
-- Si encaja orgánicamente → incorporarla como H2 o H3 con su párrafo de introducción
-- ❌ NO agrupar PAAs en un apartado de "Preguntas frecuentes" / FAQ
-- Descartar las PAAs que no encajen en la estructura natural del artículo
+**USO DE PAAs y SECCIÓN FAQ — decisión del content:**
+- Durante el brief (Fase 1 o al presentar el brief SEO), preguntar explícitamente: *"¿Quieres incluir una sección de Preguntas Frecuentes (FAQ) en el artículo?"*
+- Si el content dice **sí** → crear un H2 "Preguntas frecuentes" con las PAAs más relevantes en formato pregunta/respuesta, colocado antes del último H2 de Sesame HR.
+- Si el content dice **no** → evaluar si alguna PAA encaja orgánicamente como H2 dentro del flujo del artículo e incorporarla de forma natural. Descartar las que no encajen.
+- Si el content no responde → no incluir sección FAQ por defecto. Integrar PAAs relevantes como H2 si procede.
 
 **ESTRUCTURA DEL ARTÍCULO — orden fijo:**
 1. H1
